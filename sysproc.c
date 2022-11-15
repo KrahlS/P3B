@@ -7,6 +7,12 @@
 #include "mmu.h"
 #include "proc.h"
 
+int 
+sys_clone(void)
+{
+  return clone(); 
+}
+
 int
 sys_fork(void)
 {

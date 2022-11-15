@@ -174,6 +174,12 @@ growproc(int n)
   return 0;
 }
 
+int 
+clone(void(*fcn)(void *, void *), void *arg1, void *arg2, void *stack)
+{
+  return 0; 
+}
+
 // Create a new process copying p as the parent.
 // Sets up stack to return as if from system call.
 // Caller must set state of returned proc to RUNNABLE.
