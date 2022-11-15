@@ -178,7 +178,7 @@ join(void **stack) {
   return 0;
 }
 
-// Copied function from fork() 
+// Copied function from fork()
 int 
 clone(void(*fcn)(void *, void *), void *arg1, void *arg2, void *stack)
 {
