@@ -173,7 +173,10 @@ growproc(int n)
   switchuvm(curproc);
   return 0;
 }
-
+int
+join(void) {
+  return 0;
+}
 int 
 clone(void(*fcn)(void *, void *), void *arg1, void *arg2, void *stack)
 {
