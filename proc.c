@@ -174,7 +174,7 @@ growproc(int n)
   return 0;
 }
 int
-join(void) {
+join(void **stack) {
   return 0;
 }
 
