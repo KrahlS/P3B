@@ -6,7 +6,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
-// test push
+
 struct {
   struct spinlock lock;
   struct proc proc[NPROC];
@@ -173,7 +173,10 @@ growproc(int n)
   switchuvm(curproc);
   return 0;
 }
-
+int
+join(void) {
+  return 0;
+}
 // Create a new process copying p as the parent.
 // Sets up stack to return as if from system call.
 // Caller must set state of returned proc to RUNNABLE.

@@ -14,6 +14,16 @@ sys_fork(void)
 }
 
 int
+sys_join(void)
+{
+  void** stack;
+
+  if(argint(0, &stack) < 0) // this is definitely wrong
+    return -1;
+  return join(stack);
+}
+
+int
 sys_exit(void)
 {
   exit();
