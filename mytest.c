@@ -38,6 +38,7 @@ main(int argc, char *argv[])
    
    void *join_stack;
    int join_pid = join(&join_stack);
+   printf(1, "join_pid: %d\nclone_pid: %d\n", join_pid, clone_pid); 
    assert(join_pid == clone_pid);
    free(p);
    exit();

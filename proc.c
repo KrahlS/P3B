@@ -183,16 +183,18 @@ join(void **stack) {
   struct proc *p;
   int havekids, pid;
   struct proc *curproc = myproc();
-  
+  cprintf("HERE1!\n");
   acquire(&ptable.lock);
   for(;;){
     // Scan through table looking for exited children.
     havekids = 0;
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->parent != curproc)
+      if(p->parent != curproc) //|| p->pgdir != curproc->pgdir)
         continue;
       havekids = 1;
+      cprintf("HERE2!\n"); 
       if(p->state == ZOMBIE){
+        cprintf("HERE3!\n"); 
         // Found one.
         pid = p->pid;
         kfree(p->kstack);
