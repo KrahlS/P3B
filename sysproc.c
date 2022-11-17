@@ -17,8 +17,8 @@ sys_clone(void)
   void* stack; 
 
   // Check and fill arguments
-  if ((argptr(0, (void*)&fcn, sizeof(void*)) < 0) || (argptr(0, (void*)&arg1, sizeof(void*)) < 0) || 
-      (argptr(0, (void*)&arg2, sizeof(void*)) < 0) || (argptr(0, (void*)&stack, sizeof(void*)) < 0)) 
+  if ((argptr(0, (void*)&fcn, sizeof(void*)) < 0) || (argptr(1, (void*)&arg1, sizeof(void*)) < 0) || 
+      (argptr(2, (void*)&arg2, sizeof(void*)) < 0) || (argptr(3, (void*)&stack, sizeof(void*)) < 0)) 
         return -1; 
 
   return clone(fcn, arg1, arg2, stack); 

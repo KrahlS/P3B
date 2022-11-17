@@ -169,6 +169,10 @@ growproc(int n)
     if((sz = deallocuvm(curproc->pgdir, sz, sz + n)) == 0)
       return -1;
   }
+
+  // Add something here for P3B to update size of processes w/ same pg dir as current proc 
+
+  
   curproc->sz = sz;
   switchuvm(curproc);
   return 0;
@@ -325,7 +329,7 @@ exit(void)
 
   // Pass abandoned children to init.
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-    if(p->parent == curproc){
+    if(p->parent == curproc || p->pgdir == curproc->pgdir){ // Added this P3B 
       p->parent = initproc;
       if(p->state == ZOMBIE)
         wakeup1(initproc);
