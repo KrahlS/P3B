@@ -3,7 +3,7 @@ struct rtcdate;
 
 // system calls
 int fork(void);
-int join(void);
+int join(void** stack);
 int exit(void) __attribute__((noreturn));
 int wait(void);
 int pipe(int*);
@@ -40,3 +40,9 @@ void* memset(void*, int, uint);
 void* malloc(uint);
 void free(void*);
 int atoi(const char*);
+// P3B thread library 
+int thread_create(void (*start_routine)(void *, void *), void *arg1, void *arg2);
+int thread_join();
+void lock_init(lock_t *lock);
+void lock_acquire(lock_t *lock);
+void lock_release(lock_t *lock);

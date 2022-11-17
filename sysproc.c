@@ -10,7 +10,18 @@
 int 
 sys_clone(void)
 {
-  return clone(); 
+  // Declare arguments to be called in clone()
+  void(*fcn)(void*, void*); 
+  void* arg1; 
+  void* arg2; 
+  void* stack; 
+
+  // Check and fill arguments
+  if ((argptr(0, (void*)&fcn, sizeof(void*)) < 0) || (argptr(0, (void*)&arg1, sizeof(void*)) < 0) || 
+      (argptr(0, (void*)&arg2, sizeof(void*)) < 0) || (argptr(0, (void*)&stack, sizeof(void*)) < 0)) 
+        return -1; 
+
+  return clone(fcn, arg1, arg2, stack); 
 }
 
 int
@@ -19,13 +30,15 @@ sys_fork(void)
   return fork();
 }
 
+
 int
 sys_join(void)
 {
   void **stack;
 
-  if(argint(0, &stack) < 0) // this is definitely wrong
+  if(argptr(0, (void*)&stack, sizeof(void*)) < 0) // this is definitely wrong
     return -1;
+
   return join(stack);
 }
 

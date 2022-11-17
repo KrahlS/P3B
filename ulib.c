@@ -104,3 +104,31 @@ memmove(void *vdst, const void *vsrc, int n)
     *dst++ = *src++;
   return vdst;
 }
+
+// Skeleton code for thread library 
+int 
+thread_create(void (*start_routine)(void *, void *), void *arg1, void *arg2)
+{
+  return 0; 
+}
+
+int
+thread_join()
+{
+  return 0; 
+}
+
+void
+lock_init(lock_t *)
+{ 
+}
+
+void 
+lock_acquire(lock_t *)
+{
+}
+
+void 
+lock_release(lock_t *)
+{
+}

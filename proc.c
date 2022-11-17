@@ -173,6 +173,7 @@ growproc(int n)
   switchuvm(curproc);
   return 0;
 }
+
 int
 join(void **stack) {
   return 0;
@@ -186,24 +187,45 @@ clone(void(*fcn)(void *, void *), void *arg1, void *arg2, void *stack)
   struct proc *np;
   struct proc *curproc = myproc();
 
-  // Allocate process.
-  if((np = allocproc()) == 0){
-    return -1;
-  }
 
-  // Copy process state from proc.
-  if((np->pgdir = copyuvm(curproc->pgdir, curproc->sz)) == 0){
-    kfree(np->kstack);
-    np->kstack = 0;
-    np->state = UNUSED;
+  // Check that the stack is page-aligned 
+  if (((uint) stack % PGSIZE) != 0)
+    return -1; 
+  
+
+  // Allocate process.
+  if((np = allocproc()) == 0)
     return -1;
-  }
+  
+
+  // Set new proc page dir to the parent's 
+  np->pgdir = curproc->pgdir; 
+  
+  // Initialize stack array with arguments 
+  uint stackArr[3]; 
+  uint stackPtr = (uint) stack + PGSIZE; 
+  stackArr[0] = 0xffffffff; // Fake return PC 
+  stackArr[1] = (uint) arg1; 
+  stackArr[2] = (uint) arg2; 
+  stackPtr = stackPtr - 12; 
+
+  // Copy stack array to real stack 
+  if (copyout(np->pgdir, stackPtr, stackArr, 12) < 0)
+    return -1; 
+
+  // Set registers 
   np->sz = curproc->sz;
   np->parent = curproc;
   *np->tf = *curproc->tf;
+  np->userStack = stack; 
 
   // Clear %eax so that fork returns 0 in the child.
   np->tf->eax = 0;
+
+  // Set esp and eip to stack ptr and thread starting address fcn 
+  np->tf->esp = (uint) stackPtr; 
+  np->tf->eip = (uint) fcn; 
+
 
   for(i = 0; i < NOFILE; i++)
     if(curproc->ofile[i])
