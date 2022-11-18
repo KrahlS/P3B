@@ -125,9 +125,12 @@ thread_create(void (*start_routine)(void *, void *), void *arg1, void *arg2)
 }
 
 int
-thread_join()
+thread_join(void **stack)
 {
-  return 0; 
+  // need to check with TA that this is correct
+  // otherwise, don't know how to get the process stack
+  // to pass to join
+  return join(stack); 
 }
 
 void
