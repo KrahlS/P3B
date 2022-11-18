@@ -1,5 +1,6 @@
 struct stat;
 struct rtcdate;
+struct lock_t;
 
 // system calls
 int fork(void);
@@ -43,9 +44,9 @@ int atoi(const char*);
 // P3B thread library 
 int thread_create(void (*start_routine)(void *, void *), void *arg1, void *arg2);
 int thread_join();
-void lock_init(lock_t *lock);
-void lock_acquire(lock_t *lock);
-void lock_release(lock_t *lock);
+void lock_init(struct lock_t*);
+void lock_acquire(struct lock_t*);
+void lock_release(struct lock_t*);
 
 // User tests 
 int mytest(); 

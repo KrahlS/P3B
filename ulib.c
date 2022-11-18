@@ -4,6 +4,7 @@
 #include "user.h"
 #include "x86.h"
 #include "mmu.h"
+// #include "lock.h"
 #include <stddef.h>
 
 char*
@@ -107,7 +108,6 @@ memmove(void *vdst, const void *vsrc, int n)
   return vdst;
 }
 
-// Skeleton code for thread library 
 int 
 thread_create(void (*start_routine)(void *, void *), void *arg1, void *arg2)
 {
@@ -127,23 +127,27 @@ thread_create(void (*start_routine)(void *, void *), void *arg1, void *arg2)
 int
 thread_join(void **stack)
 {
-  // need to check with TA that this is correct
-  // otherwise, don't know how to get the process stack
-  // to pass to join
   return join(stack); 
 }
 
 void
-lock_init(lock_t *)
-{ 
+lock_init(struct lock_t* lock)
+{
+  lock->ticketnumber = 0;
+  lock->turn = 0;
+
 }
 
 void 
-lock_acquire(lock_t *)
+lock_acquire(struct lock_t* lock)
 {
+  while (xchg(&lock->ticketnumber, 1) != 0){
+  }
+
 }
 
 void 
-lock_release(lock_t *)
+lock_release(struct lock_t* lock)
 {
+  xchg(&lock->ticketnumber, 0);
 }
