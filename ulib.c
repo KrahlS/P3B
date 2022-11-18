@@ -3,6 +3,8 @@
 #include "fcntl.h"
 #include "user.h"
 #include "x86.h"
+#include "mmu.h"
+#include <stddef.h>
 
 char*
 strcpy(char *s, const char *t)
@@ -109,7 +111,17 @@ memmove(void *vdst, const void *vsrc, int n)
 int 
 thread_create(void (*start_routine)(void *, void *), void *arg1, void *arg2)
 {
-  return 0; 
+   void *stack, *p = malloc(PGSIZE*2);
+
+   if (p == NULL)
+    return -1;
+
+   if((uint)p % PGSIZE)
+     stack = p + (PGSIZE - (uint)p % PGSIZE);
+   else
+     stack = p;
+
+  return clone(start_routine, arg1, arg2, stack); 
 }
 
 int
