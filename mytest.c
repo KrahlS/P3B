@@ -32,13 +32,15 @@ main(int argc, char *argv[])
      stack = p;
 
    int clone_pid = clone(worker, 0, 0, stack);
+
    assert(clone_pid > 0);
+   
    while(global != 5);
    printf(1, "TEST PASSED\n");
    
    void *join_stack;
    int join_pid = join(&join_stack);
-   printf(1, "join_pid: %d\nclone_pid: %d\n", join_pid, clone_pid); 
+  //  printf(1, "join_pid: %d\nclone_pid: %d\n", join_pid, clone_pid); 
    assert(join_pid == clone_pid);
    free(p);
    exit();
