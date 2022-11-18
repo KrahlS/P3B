@@ -170,10 +170,16 @@ growproc(int n)
       return -1;
   }
 
-  // Add something here for P3B to update size of processes w/ same pg dir as current proc 
-
-  
   curproc->sz = sz;
+
+  // Match size of cloned threads to match parent 
+  struct proc *p;
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if ( p != curproc && p->pgdir == curproc->pgdir) {
+      p->sz = sz;
+    }
+  }
+
   switchuvm(curproc);
   return 0;
 }
@@ -239,6 +245,8 @@ clone(void(*fcn)(void *, void *), void *arg1, void *arg2, void *stack)
   if (((uint) stack % PGSIZE) != 0)
     return -1; 
   
+  if((curproc->sz - (uint)stack) < PGSIZE)
+    return -1;
 
   // Allocate process.
   if((np = allocproc()) == 0)
@@ -257,9 +265,11 @@ clone(void(*fcn)(void *, void *), void *arg1, void *arg2, void *stack)
   stackPtr = stackPtr - 12; 
 
   // Copy stack array to real stack 
-  if (copyout(np->pgdir, stackPtr, stackArr, 12) < 0)
+  if (copyout(np->pgdir, stackPtr, stackArr, 12) < 0){
+    cprintf("HERE1\n"); 
     return -1; 
-
+  }
+  cprintf("HERE2\n"); 
   // Set registers 
   np->sz = curproc->sz;
   np->parent = curproc; 
