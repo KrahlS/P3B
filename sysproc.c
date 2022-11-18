@@ -36,7 +36,7 @@ sys_join(void)
 {
   void **stack;
 
-  if(argptr(0, (void*)&stack, sizeof(void*)) < 0) // this is definitely wrong
+  if(argptr(0, (void*)&stack, sizeof(void**)) < 0) // this is definitely wrong
     return -1;
 
   return join(stack);
